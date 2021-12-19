@@ -9,7 +9,7 @@ spec:
   selector:
     svc: ftgo-cdc-service
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ftgo-cdc-service
@@ -17,6 +17,9 @@ metadata:
     application: ftgo
 spec:
   replicas: 1
+  selector:
+      matchLabels:
+        svc: ftgo-cdc-service
   strategy:
     rollingUpdate:
       maxUnavailable: 0
@@ -37,9 +40,9 @@ spec:
           - name: JAVA_OPTS
             value: "-Dsun.net.inetaddr.ttl=30"
           - name: EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS
-            value: ftgo-kafka:29092
+            value: ftgo-kafka-bootstrap:29092
           - name: EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING
-            value: ftgo-zookeeper:2181
+            value: ftgo-zookeeper-client:2181
           - name: EVENTUATE_CDC_PIPELINE_PIPELINE1_TYPE
             value: eventuate-tram
           - name: EVENTUATE_CDC_PIPELINE_PIPELINE1_READER

@@ -9,7 +9,7 @@ spec:
   selector:
     svc: ftgo-restaurant-service
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ftgo-restaurant-service
@@ -18,6 +18,10 @@ metadata:
     svc: ftgo-restaurant-service
 spec:
   replicas: 1
+  selector:
+      matchLabels:
+        svc: ftgo-restaurant-service
+        application: ftgo
   strategy:
     rollingUpdate:
       maxUnavailable: 0
@@ -52,7 +56,7 @@ spec:
           - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
             value: com.mysql.jdbc.Driver
           - name: EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS
-            value: ftgo-kafka:9092
+            value: ftgo-kafka-bootstrap:9092
           - name: EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING
             value: ftgo-zookeeper:2181
         livenessProbe:
